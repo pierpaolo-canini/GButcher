@@ -1,10 +1,26 @@
+//This Creates the menu at document opening
 function onOpen(e) {
     SpreadsheetApp.getUi()
         .createMenu('GButcher')
         .addItem('Batch Delete Sheet', 'BatchDeleteUXLogic')
+        .addSeparator()
+        .addItem('credits', 'credits')
         .addToUi();
 }
 
+//Credits dialog
+function credits() {
+    var URL1 = 'https://www.linkedin.com/in/pierpaolocanini/'
+    var URL2 = 'https://github.com/pierpaolo-canini/GButcher'
+    var htmlOutput = HtmlService
+        .createHtmlOutput('<p style="font-family:Roboto; "><a href="' + URL1 + '" ;>Pierpaolo Canini</a></br></br>Check for updates on my <a href="' + URL2 + '";>GitHub</a></p>')
+        .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+        .setWidth(260)
+        .setHeight(100);
+    var dl = SpreadsheetApp.getUi().showModelessDialog(htmlOutput, "Credits")
+}
+
+//Everything starts from here. This Checks if you have more than one sheet and if the selection sheet already exist
 function BatchDeleteUXLogic() {
     var ui = SpreadsheetApp.getUi()
     var ss = SpreadsheetApp.getActiveSpreadsheet()
@@ -21,6 +37,7 @@ function BatchDeleteUXLogic() {
     }
 }
 
+//This creates a new sheet with all the existing sheets names and place all the checkboxes to select them
 function BatchDelete() {
     var ui = SpreadsheetApp.getUi()
     var ss = SpreadsheetApp.getActiveSpreadsheet()
@@ -37,6 +54,7 @@ function BatchDelete() {
     ss.setActiveSheet(cks)
 }
 
+//This waits for the "DONE" checkbox to be checked in order to erase all sheets that have been marked.
 function onEdit(e) {
     var ui = SpreadsheetApp.getUi()
     var ss = SpreadsheetApp.getActiveSpreadsheet()
