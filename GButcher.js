@@ -13,7 +13,7 @@ function credits() {
     var URL1 = 'https://www.linkedin.com/in/pierpaolocanini/'
     var URL2 = 'https://github.com/pierpaolo-canini/GButcher'
     var htmlOutput = HtmlService
-        .createHtmlOutput('<p style="font-family:Roboto; "><a href="' + URL1 + '" ;>Pierpaolo Canini</a></br></br>Check for updates on my <a href="' + URL2 + '";>GitHub</a></p>')
+        .createHtmlOutput('<p style="font-family:Roboto; "><a href="' + URL1 + '" target="_blank";>Pierpaolo Canini</a></br></br>Check for updates on my <a href="' + URL2 + '"target="_blank";>GitHub</a></p>')
         .setSandboxMode(HtmlService.SandboxMode.IFRAME)
         .setWidth(260)
         .setHeight(100);
