@@ -2,7 +2,7 @@
 Batch Google Sheet eraser (for now)
 
 
-<img src="http://www.pierpaolocanini.com/GitHub/GButcher/PostGif_3.gif" alt="WID">
+<img src="http://www.pierpaolocanini.com/GitHub/GButcher/PostGif_3.gif" alt="WIDs">
 
 # How To Install
 Just copy and paste the content of GButcher.js file in the google sheet script editor. Then you must allow the script on the first run.
