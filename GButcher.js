@@ -39,15 +39,15 @@ function BatchDeleteUXLogic() {
 
 //This creates a new sheet with all the existing sheets names and place all the checkboxes to select them
 function BatchDelete() {
-    var ui = SpreadsheetApp.getUi()
     var ss = SpreadsheetApp.getActiveSpreadsheet()
     var allss = SpreadsheetApp.getActiveSpreadsheet().getSheets()
     var cks = ss.insertSheet().setName("00 - BATCH DELETE CHECKLIST")
+    
+    Logger.log(allss.length,allss.map(function(itm){return itm.getName()}),allss)
 
-    for (i = 0; i < allss.length; i++) {
-        cks.getRange("A" + (i + 2)).setValue(allss[i].getName())
-        cks.getRange("B" + (i + 2)).insertCheckboxes()
-    }
+    cks.getRange("A2:A"+((allss.length)+1)).setValues(allss.map(function(sheet){return [sheet.getName()]}))
+    cks.getRange("B2:B"+((allss.length)+1)).insertCheckboxes()
+
     cks.getRange("A1").setValue("CHECK THE SHEETS YOU WANT TO DELETE")
     cks.getRange("E1").setValue("CHECK WHEN YOU'RE DONE")
     cks.getRange("E2").insertCheckboxes()
@@ -69,13 +69,16 @@ function onEdit(e) {
                 BDcklst.getRange("E2").setValue(false)
                 ui.alert("AT LEAST ONE SHEET MUST EXIST OR YOU WILL CAUSE A BLACK HOLE")
             } else {
-                for (fdc = 0; fdc < nf.length; fdc++) {
-                    if (BDcklst.getRange("B" + (2 + fdc)).getValue() == true) {
-                        ss.deleteSheet(ss.getSheetByName(nf[fdc][0]))
-                    } else {}
-                }
-                ss.deleteSheet(ss.getSheetByName("00 - BATCH DELETE CHECKLIST"))
-                ui.alert("DONE")
+              
+              var flatBoolValues = BDcklst.getRange("B2:B" + lr).getValues().map(function(val){return val[0]})
+              var deleteIndices = flatBoolValues.map(function(bol,index){if(bol){return index}}).filter(e => typeof e === 'number')           
+              var flatSheetNames = BDcklst.getRange("A2:A" + lr).getValues().map(function(val){return val[0]})
+              var deleteSheets = deleteIndices.map(x=>flatSheetNames[x])
+              
+              deleteSheets.map(x=>ss.deleteSheet(ss.getSheetByName(x)))
+              
+              ss.deleteSheet(ss.getSheetByName("00 - BATCH DELETE CHECKLIST"))
+              ui.alert("DONE")
             }
         }
     }
